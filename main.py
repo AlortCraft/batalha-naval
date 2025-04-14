@@ -47,7 +47,11 @@ X_or_O_turn = 'x'
 end_game = 0
 #Desenhando coluna e linhas
 def gradeTabuleiro(tela):
-    pg.draw.line(tela,preto,(100,0), (100,1000), 3)
+    for i in range(100,1001, 100):
+        pg.draw.line(tela,preto,(i,0), (i,1000), 3)
+    for j in range(100,1001, 100):
+        pg.draw.line(tela,preto,(0,j), (1000,j), 3)
+'''  pg.draw.line(tela,preto,(100,0), (100,1000), 3)
     pg.draw.line(tela,preto,(200,0), (200,1000), 3)
     pg.draw.line(tela,preto,(300,0), (300,1000), 3)
     pg.draw.line(tela,preto,(400,0), (400,1000), 3)
@@ -66,7 +70,7 @@ def gradeTabuleiro(tela):
     pg.draw.line(tela,preto,(0,700), (1000,700), 3)
     pg.draw.line(tela,preto,(0,800), (1000,800), 3)
     pg.draw.line(tela,preto,(0,900), (1000,900), 3)
-    pg.draw.line(tela,preto,(0,1000), (1000,1000), 3)
+    pg.draw.line(tela,preto,(0,1000), (1000,1000), 3)'''
 #Jogo
 while True:
     for event in pg.event.get():

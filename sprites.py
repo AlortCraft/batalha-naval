@@ -61,7 +61,7 @@ def main():
                 run = False
                 break
         
-        anim_constante(tela, largura, altura, sprs_agua, tiles_agua)
+        anim_constante(tela, sprs_agua, tiles_agua)
             
         pygame.display.update()
     

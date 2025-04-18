@@ -26,6 +26,7 @@ def main():
     
     largura, altura = 1110, 1000
     tela = pygame.display.set_mode((largura, altura))
+    pygame.display.set_caption("Tabuleiros")
     
     canva = pygame.Surface((largura, altura), pygame.SRCALPHA).convert_alpha()
     canva.fill((255,255,255, 50))

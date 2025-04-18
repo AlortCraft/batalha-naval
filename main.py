@@ -17,7 +17,9 @@ relogio = pg.time.Clock()
 
 #Fonte
 pg.font.init()
-fonte= pg.font.SysFont("Comic Sans MS",30)
+fonte = pg.font.SysFont("Comic Sans MS",30)
+
+texto = fonte.render("Testando", 1, (0,0,0))
 
 
 #QUADRO
@@ -78,7 +80,15 @@ while rodando:
     click = pg.mouse.get_pressed()
             
     #JOGO
+    tabuleiros.gerando_tabuleiros(tela, largura, altura)
     #gradeTabuleiro(tela)
+    
+    pg.draw.rect(tela, (100,100,100), (0, altura - 380, largura,380))
+    pg.draw.line(tela, (255,255,255), (largura/2, altura-380), (largura/2, altura), 10)
+    
+    tela.blit(texto, (30, altura - 360))
+    
+    
             
     #ULTIMA JOGADA
     if click[0]==1:

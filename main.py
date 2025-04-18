@@ -66,7 +66,7 @@ while rodando:
            break
                    
     #Desenhando a agua e atualizando sprites
-    sprites.anim_constante(tela, largura, altura, spr_agua, tiles_agua)
+    sprites.anim_constante(tela, spr_agua, tiles_agua)
                     
     #Declarando variavel da posicao mouse        
     mouse = pg.mouse.get_pos()

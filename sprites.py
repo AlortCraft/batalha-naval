@@ -26,7 +26,7 @@ def agua_spr_tile(tela, largura_tela, altura_tela):
             
     return agua_spr, tiles
 
-def anim_constante(tela, largura_tela, altura_tela, sprites, tiles, temp_anim=500):
+def anim_constante(tela, sprites, tiles, temp_anim=500):
         #tempo (em milissegundo) de agora
         agora = pygame.time.get_ticks()
 

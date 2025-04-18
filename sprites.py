@@ -1,45 +1,71 @@
 import pygame
-
-class Sprite(pygame.sprite.Sprite):
-    def __init__(self, x, y, sprites, index, tempo_animacao):
-        super().__init__()
-        
-        # Variaveis criadas
-        self.sprites = sprites
-        self.index = index
-        self.tempo_animacao = tempo_animacao
-        self.ultimo_update = pygame.time.get_ticks()
-        
-        # variaveis do pygame.sprite.Sprite
-        self.image = self.sprites[self.index]
-        self.rect = self.image.get_rect(topleft=(x, y))
-            
-    def update(self):
-        # pegar tempo atual em milissegundos
-        tempo_atual = pygame.time.get_ticks()
-        # se ja passou +500 milissegundos, atualize imagem
-        if (tempo_atual - self.ultimo_update) >= self.tempo_animacao:
-            self.ultimo_update = tempo_atual
-            # Atualizando index da sprite entre 0 e 2.
-            self.index = (self.index + 1) % len(self.sprites)
-            self.image = self.sprites[self.index]
-            
-def agua_sprite(altura_tela, largura_tela):
+          
+def agua_spr_tile(tela, largura_tela, altura_tela):
     
     agua_size = (32, 32)
     
     agua_spr = [
-        pygame.transform.scale(pygame.image.load("sprites/water1.png"), (agua_size[0], agua_size[1])),
-        pygame.transform.scale(pygame.image.load("sprites/water2.png"), (agua_size[0], agua_size[1])),
-        pygame.transform.scale(pygame.image.load("sprites/water3.png"), (agua_size[0], agua_size[1]))
+        pygame.transform.scale(pygame.image.load("sprites/water/water1.png"), (agua_size[0], agua_size[1])),
+        pygame.transform.scale(pygame.image.load("sprites/water/water2.png"), (agua_size[0], agua_size[1])),
+        pygame.transform.scale(pygame.image.load("sprites/water/water3.png"), (agua_size[0], agua_size[1]))
     ]
-    
-    # Criando agrupamento entre as sprites
-    agua_group = pygame.sprite.Group()
-    for x in range(0, largura_tela, agua_size[1]):
+    #crianco tiles
+    tiles = []
+    for x in range(0, largura_tela, agua_size[0]):
         for y in range(0, altura_tela, agua_size[1]):
-            tile = Sprite(x, y, agua_spr, x % len(agua_spr), 500)
-            agua_group.add(tile)
+            tiles.append({
+                "posicao" : (x,y),
+                "index" : (x//agua_size[0]) % len(agua_spr),
+                "ultimo_update" : pygame.time.get_ticks()
+            })
+
+    #desenhando tiles iniciais
+    for tile in tiles:
+        index = tile["index"]
+        tela.blit(agua_spr[index], tile["posicao"])
             
+    return agua_spr, tiles
+
+def anim_constante(tela, largura_tela, altura_tela, sprites, tiles, temp_anim=500):
+        #tempo (em milissegundo) de agora
+        agora = pygame.time.get_ticks()
+
+        #atualizar sprites
+        for tile in tiles:
+            if (agora - tile["ultimo_update"]) >= temp_anim:
+                tile["ultimo_update"] = agora
+                tile["index"] = (tile["index"] + 1) % len(sprites)
+                
+                #desenhar sprites
+                index = tile["index"]
+                tela.blit(sprites[index], tile["posicao"])
             
-    return agua_group
+
+def main():
+    pygame.init()
+    
+    largura, altura = 1280, 720
+    tela = pygame.display.set_mode((largura, altura))
+    pygame.display.set_caption("Modulo de Sprites")
+    
+    relogio = pygame.time.Clock()
+    
+    sprs_agua, tiles_agua = agua_spr_tile(tela, largura, altura)
+    
+    #Loop
+    run = True
+    while run:
+        relogio.tick(60)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                break
+        
+        anim_constante(tela, largura, altura, sprs_agua, tiles_agua)
+            
+        pygame.display.update()
+    
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()

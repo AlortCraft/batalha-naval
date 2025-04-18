@@ -9,6 +9,8 @@ from sys import exit
 largura =  1110
 altura = 1000
 tela = pg.display.set_mode((largura, altura))
+pg.display.set_caption("Batalha Naval")
+pg.display.set_icon(pg.image.load("sprites/naval_icon.png"))
 
 #Definindo relogio
 relogio = pg.time.Clock()
@@ -16,6 +18,7 @@ relogio = pg.time.Clock()
 #Fonte
 pg.font.init()
 fonte= pg.font.SysFont("Comic Sans MS",30)
+
 
 #QUADRO
 quadro =  [['n','n','n','n','n','n','n','n','n','n'],
@@ -40,8 +43,8 @@ X_or_O_turn = 'x'
 
 end_game = 0
 
-#Criando sprites da agua e agrupando
-agua = sprites.agua_sprite(largura, altura)
+#gerando sprites e tiles da agua
+spr_agua, tiles_agua = sprites.agua_spr_tile(tela,largura, altura)
 
 #Desenhando coluna e linhas
 '''
@@ -62,23 +65,22 @@ while rodando:
            rodando = False
            break
                    
-#Desenhando a agua e atualizando sprites
-agua.draw(tela)
-agua.update()
-                   
-#Declarando variavel da posicao mouse        
+    #Desenhando a agua e atualizando sprites
+    sprites.anim_constante(tela, largura, altura, spr_agua, tiles_agua)
+                    
+    #Declarando variavel da posicao mouse        
     mouse = pg.mouse.get_pos()
     mouse_position_x = mouse[0]
     mouse_position_y = mouse[1]
     print(mouse)
-           
-#Declarando variavel do click
+            
+    #Declarando variavel do click
     click = pg.mouse.get_pressed()
-           
-#JOGO
-#gradeTabuleiro(tela)
-           
-#ULTIMA JOGADA
+            
+    #JOGO
+    #gradeTabuleiro(tela)
+            
+    #ULTIMA JOGADA
     if click[0]==1:
         click_last_status = 1
     else:

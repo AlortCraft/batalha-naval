@@ -1,7 +1,7 @@
 import pygame as pg
 import math
 import pandas as pd
-import cores, sprites
+import cores, sprites, tabuleiros
 from pygame.locals import *
 from sys import exit
 

@@ -44,7 +44,7 @@ def anim_constante(tela, largura_tela, altura_tela, sprites, tiles, temp_anim=50
 def main():
     pygame.init()
     
-    largura, altura = 1280, 720
+    largura, altura = 1110, 1000
     tela = pygame.display.set_mode((largura, altura))
     pygame.display.set_caption("Modulo de Sprites")
     

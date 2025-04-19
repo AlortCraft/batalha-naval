@@ -12,7 +12,7 @@ def agua_spr_tile(tela, largura_tela, altura_tela):
     #crianco tiles
     tiles = []
     for x in range(0, largura_tela, agua_size[0]):
-        for y in range(0, altura_tela, agua_size[1]):
+        for y in range(0, altura_tela-380, agua_size[1]):
             tiles.append({
                 "posicao" : (x,y),
                 "index" : (x//agua_size[0]) % len(agua_spr),
@@ -23,6 +23,8 @@ def agua_spr_tile(tela, largura_tela, altura_tela):
     for tile in tiles:
         index = tile["index"]
         tela.blit(agua_spr[index], tile["posicao"])
+        
+        
             
     return agua_spr, tiles
 

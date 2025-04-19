@@ -1,18 +1,28 @@
 import pygame
 
+COR = (50,50,50)
 
-def gerando_tabuleiros(tela, largura_tela, altura_tela):
-    cor = (50,50,50)
-    tam_celula = 48
-    lins_tab, cols_tab = 10, 10
-    dist_tabuleiros = 80
-    
-    for linha in range(lins_tab):
-        x = (linha * tam_celula) + (largura_tela//2) - (tam_celula * lins_tab/2)
-        for coluna in range(cols_tab):
-            y = (coluna * tam_celula) + 80
-            pygame.draw.rect(tela, cor, (x - (tam_celula*lins_tab/2) - dist_tabuleiros/2, y, tam_celula, tam_celula),3)
-            pygame.draw.rect(tela, cor, (x + (tam_celula*lins_tab/2) + dist_tabuleiros/2, y, tam_celula, tam_celula),3)
+TAM_CELULA = 48
+LINS_TAB, COLS_TAB = 10, 10
+DIST_TABS = 80
+GROSSURA_TABS = 2
+
+POS_TAB_01 = (35, 80)
+POS_TAB_02 = (595, 80)
+
+            
+
+
+def desenhando_tabuleiros(tela, largura_tela):
+    for linha in range(LINS_TAB):
+        x = (linha * TAM_CELULA) + (largura_tela//2) - (TAM_CELULA * LINS_TAB/2)
+        for coluna in range(COLS_TAB):
+            y = (coluna * TAM_CELULA) + 80
+            pygame.draw.rect(tela, COR, (x - (TAM_CELULA*LINS_TAB/2) - DIST_TABS/2, y, TAM_CELULA, TAM_CELULA), GROSSURA_TABS)
+            pygame.draw.rect(tela, COR, (x + (TAM_CELULA*LINS_TAB/2) + DIST_TABS/2, y, TAM_CELULA, TAM_CELULA), GROSSURA_TABS)
+            
+            
+            
             
 def pos_tabuleiro(tela, largura_tela, altura_tela, status):
     if status == 1:
@@ -31,7 +41,6 @@ def main():
     canva = pygame.Surface((largura, altura), pygame.SRCALPHA).convert_alpha()
     canva.fill((255,255,255, 50))
     
-    gerando_tabuleiros(tela, largura, altura)
     
     run = True
     while run:
@@ -40,7 +49,7 @@ def main():
                 run = False
                 break
         
-        gerando_tabuleiros(tela, largura, altura)
+        desenhando_tabuleiros(tela, largura)
         
         pygame.display.update()
     

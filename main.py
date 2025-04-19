@@ -24,10 +24,33 @@ def main():
 
     texto = fonte_instr.render("Instrucoes de jogo", 1, (0,0,0))
 
-    pg.draw.rect(tela, (100,100,100), (0, altura - 380, largura,380))
-    pg.draw.line(tela, (255,255,255), (largura/2, altura-380), (largura/2, altura), 10)
+    pg.draw.rect(tela, (100,100,100), (0, altura - 400, largura,400))
+    pg.draw.line(tela, (255,255,255), (largura/2, altura-390), (largura/2, altura), 10)
+    pg.draw.line(tela, (255,255,255), (0, altura-390), (largura, altura-390), 10)
 
-    tela.blit(texto, (30, altura - 360))
+    tela.blit(texto, (30, altura - 370))
+    
+    
+    #navios
+    ship1 = pg.image.load("sprites/ships/ShipCarrierHull.png")
+    ship1 = pg.transform.scale(ship1, (48, 48*4))
+    ship1 = pg.transform.rotate(ship1, -90)
+    
+    ship2 = pg.image.load("sprites/ships/ShipCruiserHull.png")
+    ship2 = pg.transform.scale(ship2, (36, 48*3))
+    ship2 = pg.transform.rotate(ship2, 90)
+    
+    ship3 = pg.image.load("sprites/ships/ShipCarrierHull.png")
+    ship3 = pg.transform.scale(ship3, (48, 48*4))
+    ship3 = pg.transform.rotate(ship3, -90)
+    
+    ship4 = pg.image.load("sprites/ships/ShipRescue.png")
+    ship4 = pg.transform.scale(ship4, (24, 48*2))
+    ship4 = pg.transform.rotate(ship4, 0)
+    
+    ship5 = pg.image.load("sprites/ships/Plane.png")
+    ship5 = pg.transform.scale(ship5, (48, 48*1))
+    ship5 = pg.transform.rotate(ship5, 180)
 
 
     #tabuleiro oculto
@@ -75,6 +98,13 @@ def main():
         
         #gerar tabuleiros
         tabuleiros.desenhando_tabuleiros(tela, largura)
+        
+        #desenhar navios
+        tela.blit(ship1, (35, 80))
+        tela.blit(ship2, (35+48, 80+48+48))
+        tela.blit(ship3, (35+48+48+48+48+48+48, 80))
+        tela.blit(ship4, (35+48+48, 80+48+48+48+48+48))
+        tela.blit(ship5, (35+48+48+48+48+48, 80+48+48+48+48))
                         
         #Declarando variavel da posicao mouse        
         mouse = pg.mouse.get_pos()

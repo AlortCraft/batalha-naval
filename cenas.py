@@ -14,9 +14,9 @@ def menu_inicial(tela_, mouse_x, mouse_y):
     botao_jogar_rect.center = (LARGURA/2, 450)
     
     
-    botao_config = FONTES["botoes menu_inicial"].render("CONFIGURAÇÕES", 1, (0,0,0))
-    botao_config_rect = botao_config.get_rect()
-    botao_config_rect.center = (LARGURA/2, 550)
+    botao_instrucoes = FONTES["botoes menu_inicial"].render("INSTRUÇÕES", 1, (0,0,0))
+    botao_instrucoes_rect = botao_instrucoes.get_rect()
+    botao_instrucoes_rect.center = (LARGURA/2, 550)
     
     
     botao_sair = FONTES["botoes menu_inicial"].render("SAIR", 1, (0,0,0))
@@ -24,7 +24,7 @@ def menu_inicial(tela_, mouse_x, mouse_y):
     botao_sair_rect.center = (LARGURA/2, 650)
     
     colid_jogar = botao_jogar_rect.collidepoint(mouse_x, mouse_y)
-    colid_config = botao_config_rect.collidepoint(mouse_x, mouse_y)
+    colid_config = botao_instrucoes_rect.collidepoint(mouse_x, mouse_y)
     colid_sair = botao_sair_rect.collidepoint(mouse_x, mouse_y)
         
     if colid_jogar:
@@ -33,8 +33,9 @@ def menu_inicial(tela_, mouse_x, mouse_y):
             sprites.agua_spr_tile(tela_)
             return "jogo"
     if colid_config:
-        botao_config = FONTES["botoes menu_inicial"].render("CONFIGURAÇÕES", 1, (100,100,100))
+        botao_instrucoes = FONTES["botoes menu_inicial"].render("INSTRUÇÕES", 1, (100,100,100))
         if pg.mouse.get_pressed()[0] == 1:
+            sprites.agua_spr_tile(tela_)
             return "config"
     if colid_sair:
         botao_sair = FONTES["botoes menu_inicial"].render("SAIR", 1, (100,100,100))
@@ -44,7 +45,7 @@ def menu_inicial(tela_, mouse_x, mouse_y):
         
     tela_.blit(titulo, titulo_rect)
     tela_.blit(botao_jogar, botao_jogar_rect)
-    tela_.blit(botao_config, botao_config_rect)
+    tela_.blit(botao_instrucoes, botao_instrucoes_rect)
     tela_.blit(botao_sair, botao_sair_rect)
                 
     return "menu"

@@ -1,147 +1,157 @@
 import pygame as pg
 import cores, sprites, tabuleiros
+from settings import *
 
-
-def menu():
-    pass
-
-def jogo():
-    #Tela
-    largura =  1110
-    altura = 1000
-    tela = pg.display.set_mode((largura, altura))
-    pg.display.set_caption("Batalha Naval")
-    pg.display.set_icon(pg.image.load("sprites/naval_icon.png"))
-
-    #Definindo relogio
-    relogio = pg.time.Clock()
-
-    #Fonte
-    pg.font.init()
-    fonte_titulo = pg.font.Font("text_fonts/gunplay.otf", 100)
-    fonte_instr = pg.font.Font("text_fonts/minecraft.ttf", 50)
-
-    texto = fonte_instr.render("Instrucoes de jogo", 1, (0,0,0))
-
-    pg.draw.rect(tela, (100,100,100), (0, altura - 400, largura,400))
-    pg.draw.line(tela, (255,255,255), (largura/2, altura-390), (largura/2, altura), 10)
-    pg.draw.line(tela, (255,255,255), (0, altura-390), (largura, altura-390), 10)
-
-    tela.blit(texto, (30, altura - 370))
+#menu inicial
+def menu_inicial(tela_, mouse_x, mouse_y):
+    titulo = FONTES["titulo menu_inicial"].render("BATALHA NAVAL", 1, (0,0,0))
+    titulo_rect = titulo.get_rect()
+    titulo_rect.center = (LARGURA/2, 300)
     
     
-    #navios
-    ship1 = pg.image.load("sprites/ships/ShipCarrierHull.png")
-    ship1 = pg.transform.scale(ship1, (48, 48*4))
-    ship1 = pg.transform.rotate(ship1, 90)
+    botao_jogar = FONTES["botoes menu_inicial"].render("JOGAR", 1, (0,0,0))
+    botao_jogar_rect = botao_jogar.get_rect()
+    botao_jogar_rect.center = (LARGURA/2, 450)
     
-    ship2 = pg.image.load("sprites/ships/ShipCruiserHull.png")
-    ship2 = pg.transform.scale(ship2, (36, 48*3))
-    ship2 = pg.transform.rotate(ship2, 90)
     
-    ship3 = pg.image.load("sprites/ships/ShipRescue.png")
-    ship3 = pg.transform.scale(ship3, (24, 48*2))
-    ship3 = pg.transform.rotate(ship3, 90)
+    botao_config = FONTES["botoes menu_inicial"].render("CONFIGURAÇÕES", 1, (0,0,0))
+    botao_config_rect = botao_config.get_rect()
+    botao_config_rect.center = (LARGURA/2, 550)
     
-    ship4 = pg.image.load("sprites/ships/Plane.png")
-    ship4 = pg.transform.scale(ship4, (48, 48*1))
-    ship4 = pg.transform.rotate(ship4, 90)
     
-    tela.blit(ship1, (largura/1.3, altura -350))
-    tela.blit(ship2, (largura/1.25, altura -280))
-    tela.blit(ship3, (largura/1.2, altura -210))
-    tela.blit(ship4, (largura/1.15, altura -140))
+    botao_sair = FONTES["botoes menu_inicial"].render("SAIR", 1, (0,0,0))
+    botao_sair_rect = botao_sair.get_rect()
+    botao_sair_rect.center = (LARGURA/2, 650)
     
-    texto = fonte_instr.render("1x", 1, (0,0,0))
-    tela.blit(texto, (largura/1.5, altura -350))
-    texto = fonte_instr.render("2x", 1, (0,0,0))
-    tela.blit(texto, (largura/1.45, altura -280))
-    texto = fonte_instr.render("3x", 1, (0,0,0))
-    tela.blit(texto, (largura/1.4, altura -210))
-    texto = fonte_instr.render("4x", 1, (0,0,0))
-    tela.blit(texto, (largura/1.35, altura -140))
-
-
-    #tabuleiro oculto
-    tabuleiro_oculto =  [["" for i in range(tabuleiros.LINS_TAB)] for i in range(tabuleiros.COLS_TAB)]
-
-    #Valores
-    ultimoStatus = 0
-    CliqueFora= 0
-
-    click_position_x = -1
-    click_position_y = -1
-
-    X_or_O_turn = 'x'
-
-    end_game = 0
-
-    #gerando sprites e tiles da agua
-    spr_agua, tiles_agua = sprites.agua_spr_tile(tela,largura, altura)
-
-    #Desenhando coluna e linhas
-    '''
-    def gradeTabuleiro(tela):
-        for i in range(100,1001, 100):
-            pg.draw.line(tela,cores.preto,(i,0), (i,1000), 3)
-        for j in range(100,1001, 100):
-            pg.draw.line(tela,cores.preto,(0,j), (1000,j), 3)
-    '''
-
-    #Jogo
-    troca_jogador = False
-    player_ganhador = 0
-    rodando = True
-    while rodando:
-        #Definindo FPS
-        relogio.tick(60)
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                rodando = False
-                break
-            if event.type == pg.MOUSEBUTTONDOWN:
-                print("Clicou")
-                    
-        #Desenhando a agua e atualizando sprites
-        sprites.anim_constante(tela, spr_agua, tiles_agua)
+    colid_jogar = botao_jogar_rect.collidepoint(mouse_x, mouse_y)
+    colid_config = botao_config_rect.collidepoint(mouse_x, mouse_y)
+    colid_sair = botao_sair_rect.collidepoint(mouse_x, mouse_y)
         
-        #desenhar navios
-        tela.blit(ship1, (35, 80))
-        tela.blit(ship2, (35 + (48*3), 80 + (48*3)))
-        tela.blit(ship3, (35 + (48*1), 80 + (48*8)))
-        tela.blit(ship4, (35 + (48*6), 80 + (48*6)))
-        
-        #gerar tabuleiros
-        tabuleiros.desenhando_tabuleiros(tela, largura)
+    if colid_jogar:
+        botao_jogar = FONTES["botoes menu_inicial"].render("JOGAR", 1, (100,100,100))
+        if pg.mouse.get_pressed()[0] == 1:
+            sprites.agua_spr_tile(tela_)
+            return "jogo"
+    if colid_config:
+        botao_config = FONTES["botoes menu_inicial"].render("CONFIGURAÇÕES", 1, (100,100,100))
+        if pg.mouse.get_pressed()[0] == 1:
+            return "config"
+    if colid_sair:
+        botao_sair = FONTES["botoes menu_inicial"].render("SAIR", 1, (100,100,100))
+        if pg.mouse.get_pressed()[0] == 1:
+            return "sair"
         
         
-                        
-        #Declarando variavel da posicao mouse        
-        mouse = pg.mouse.get_pos()
-        mouse_pos_x, mouse_pos_y = mouse
-        
-        if mouse_pos_x <= largura/2:
-            print(f"TABULEIRO 1 - X: {(mouse_pos_x - tabuleiros.POS_TAB_01[0])//48} | Y: {(mouse_pos_y - tabuleiros.POS_TAB_01[1])//48}")
-        else:
-            print(f"TABULEIRO 2 - X: {(mouse_pos_x - tabuleiros.POS_TAB_02[0])//48} | Y: {(mouse_pos_y - tabuleiros.POS_TAB_02[1])//48}")
+    tela_.blit(titulo, titulo_rect)
+    tela_.blit(botao_jogar, botao_jogar_rect)
+    tela_.blit(botao_config, botao_config_rect)
+    tela_.blit(botao_sair, botao_sair_rect)
                 
-        #Declarando variavel do click
-        click = pg.mouse.get_pressed()
+    return "menu"
+    
+    
+    
+    
+#jogo
+def jogo(tela_, mouse_x, mouse_y, navios_spr):
+    
+    #players
+    player1 = FONTES["titulo menu_jogo"].render("PLAYER 1", 1, (0, 0, 0))
+    player2 = FONTES["titulo menu_jogo"].render("PLAYER 2", 1, (0, 0, 0))
+    
+    tela_.blit(player1, (tabuleiros.POS_TAB_01[0] + (tabuleiros.COLS_TAB * (tabuleiros.TAM_CELULA/2) - 110), 20))
+    tela_.blit(player2, (tabuleiros.POS_TAB_02[0] + (tabuleiros.COLS_TAB * (tabuleiros.TAM_CELULA/2) - 110), 20))
         
-        #ULTIMA JOGADA
-        if click[0]==1:
-            click_last_status = 1
-        else:
-            click_last_status = 0
-            
-        pg.display.update()
-    pg.quit()
+    #desenhando tabuleiro
+    tabuleiros.desenhando_tabuleiros(tela_)
+    
+    mouse_pos_tab01_x = (mouse_x - tabuleiros.POS_TAB_01[0])//48
+    mouse_pos_tab01_y = (mouse_y - tabuleiros.POS_TAB_01[1])//48
+    
+    mouse_pos_tab02_x = (mouse_x - tabuleiros.POS_TAB_02[0])//48
+    mouse_pos_tab02_y = (mouse_y - tabuleiros.POS_TAB_02[1])//48
+    
+    if (0 <= mouse_pos_tab01_x < tabuleiros.LINS_TAB) and (0 <= mouse_pos_tab01_y < tabuleiros.COLS_TAB):
+        print(f"TABULEIRO 1 - X: {mouse_pos_tab01_x} | Y: {mouse_pos_tab01_y}")
+    elif (0 <= mouse_pos_tab02_x < tabuleiros.LINS_TAB) and (0 <= mouse_pos_tab02_y < tabuleiros.COLS_TAB):
+        print(f"TABULEIRO 2 - X: {mouse_pos_tab02_x} | Y: {mouse_pos_tab02_y}")
+    
+    #Desenhando menu do jogo:
+    pg.draw.rect(tela_, (100,100,100), (0, ALTURA - 400, LARGURA,400))
+    pg.draw.line(tela_, (255,255,255), (LARGURA/2, ALTURA-400), (LARGURA/2, ALTURA), 10)
+    pg.draw.line(tela_, (255,255,255), (0, ALTURA-400), (LARGURA, ALTURA-400), 10)
+        
+    
+    
+    tela_.blit(navios_spr["tm_4"], (LARGURA/2 + 400, ALTURA-300))
+    tela_.blit(navios_spr["tm_3"], (LARGURA/2 + 300, ALTURA-300))
+    tela_.blit(navios_spr["tm_2"], (LARGURA/2 + 200, ALTURA-300))
+    tela_.blit(navios_spr["tm_1"], (LARGURA/2 + 100, ALTURA-300))
+    quatd_tm_4 = FONTES["texto menu_jogo"].render("1x", 1, (0,0,0))
+    quatd_tm_3 = FONTES["texto menu_jogo"].render("2x", 1, (0,0,0))
+    quatd_tm_2 = FONTES["texto menu_jogo"].render("3x", 1, (0,0,0))
+    quatd_tm_1 = FONTES["texto menu_jogo"].render("4x", 1, (0,0,0))
+    tela_.blit(quatd_tm_4, (LARGURA/2 + 410, ALTURA - 350))
+    tela_.blit(quatd_tm_3, (LARGURA/2 + 300, ALTURA - 350))
+    tela_.blit(quatd_tm_2, (LARGURA/2 + 200, ALTURA - 350))
+    tela_.blit(quatd_tm_1, (LARGURA/2 + 110, ALTURA - 350))
+    
+    
+    titulo_menu_jogo = FONTES["titulo menu_jogo"].render("Instrucoes de jogo", 1, (0,0,0))
+    tela_.blit(titulo_menu_jogo, (30, ALTURA - 370))
+    texto1 = FONTES["texto menu_jogo"].render("... para colocar navios", 1, (0,0,0))
+    tela_.blit(texto1, (30, LARGURA - 280))
+    texto2 = FONTES["texto menu_jogo"].render("... para colocar rotacionar navios", 1, (0,0,0))
+    tela_.blit(texto2, (30, ALTURA - 210))
     
     
     
 
 def main():
-    jogo()
+    pg.init()
+    #Tela do jogo e FPS
+    tela = pg.display.set_mode((LARGURA, ALTURA))
+    relogio = pg.time.Clock()
+    
+    #Background do jogo
+    agua_spr, agua_tile = sprites.agua_spr_tile(tela)
+    
+    #criando sprites dos navios
+    navios = sprites.navios_spr()
+    
+    
+    cena_atual = "menu"
+    run = True
+    while run:
+        relogio.tick(FPS)
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                run = False
+                break
+            
+        #Declarando variavel da posicao mouse        
+        mouse = pg.mouse.get_pos()
+        mouse_pos_x, mouse_pos_y = mouse
+            
+        sprites.anim_constante(tela, agua_spr, agua_tile)
+        
+        if cena_atual == "menu":
+            cena_atual = menu_inicial(tela, mouse_pos_x, mouse_pos_y)
+        elif cena_atual == "jogo":
+            jogo(tela, mouse_pos_x, mouse_pos_y, navios)
+        elif cena_atual == "sair":
+            run = False
+            break
+        
+        
+        
+        pg.display.update()
+        
+        
+    pg.quit()
+            
+    
+    
 
 
 

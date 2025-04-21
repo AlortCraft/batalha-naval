@@ -35,6 +35,9 @@ def main():
     
     #criando sprites dos navios
     navios = sprites.navios_spr()
+    #Marcando tabuleiro
+    marcacoes_tab01 = []
+    marcacoes_tab02 = []
 
     #Jogo
     cena_atual = "menu"
@@ -44,27 +47,56 @@ def main():
     while rodando:
         #Definindo FPS
         relogio.tick(FPS)
+        
+        #Declarando variavel da posicao mouse        
+        mouse = pg.mouse.get_pos()
+        mouse_pos_x, mouse_pos_y = mouse
+        
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 rodando = False
                 break
             if event.type == pg.MOUSEBUTTONDOWN:
-                print("Clicou")
+                if cena_atual == "jogo":
+                    if pg.get_init:
+                        tab01, tab02 = tabuleiros.desenhando_tabuleiros(tela)
+                
+                    mouse_pos_tab01_x = (mouse_pos_x - tabuleiros.POS_TAB_01[0])//48
+                    mouse_pos_tab01_y = (mouse_pos_y - tabuleiros.POS_TAB_01[1])//48
+                    
+                    mouse_pos_tab02_x = (mouse_pos_x - tabuleiros.POS_TAB_02[0])//48
+                    mouse_pos_tab02_y = (mouse_pos_y - tabuleiros.POS_TAB_02[1])//48
+                    
+                    if (0 <= mouse_pos_tab01_x < tabuleiros.LINS_TAB) and (0 <= mouse_pos_tab01_y < tabuleiros.COLS_TAB):
+                        if pg.mouse.get_pressed()[0] == 1 and (tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][0], tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][1], 48,48) not in marcacoes_tab01:
+                            print("MARCADO 1!")
+                            marcacoes_tab01.append((tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][0], tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][1], 48,48))
+                    elif (0 <= mouse_pos_tab02_x < tabuleiros.LINS_TAB) and (0 <= mouse_pos_tab02_y < tabuleiros.COLS_TAB):
+                        if pg.mouse.get_pressed()[0] == 1 and (tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][0], tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][1], 48,48) not in marcacoes_tab02:
+                            print("MARCADO 2!")
+                            marcacoes_tab02.append((tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][0], tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][1], 48,48))
+                
+                elif cena_atual == "menu":
+                    pass
+                
+                
         
-        if cena_atual == "menu":
-            pass         
-        
-        
-                        
-        #Declarando variavel da posicao mouse        
-        mouse = pg.mouse.get_pos()
-        mouse_pos_x, mouse_pos_y = mouse
+
         
         sprites.anim_constante(tela, agua_spr, agua_tile)
         
         if cena_atual == "menu":
             cena_atual = cenas.menu_inicial(tela, mouse_pos_x, mouse_pos_y)
         elif cena_atual == "jogo":
+            tabuleiros.desenhando_tabuleiros(tela)
+            
+            #desenhando marcacoes
+            for marcacao in marcacoes_tab01:
+                pygame.draw.rect(tela, (255,0,0), marcacao)
+                
+            for marcacao in marcacoes_tab02:
+                pygame.draw.rect(tela, (0,0,255), marcacao)
+            
             cenas.jogo(tela, mouse_pos_x, mouse_pos_y, navios)
         elif cena_atual == "sair":
             run = False

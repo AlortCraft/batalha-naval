@@ -63,8 +63,8 @@ def jogo(tela_, mouse_x, mouse_y, navios_spr):
     tela_.blit(player1, (tabuleiros.POS_TAB_01[0] + (tabuleiros.COLS_TAB * (tabuleiros.TAM_CELULA/2) - 110), 20))
     tela_.blit(player2, (tabuleiros.POS_TAB_02[0] + (tabuleiros.COLS_TAB * (tabuleiros.TAM_CELULA/2) - 110), 20))
         
-    #desenhando tabuleiro
-    tabuleiros.desenhando_tabuleiros(tela_)
+    #desenhando tabuleiro e recebendo lista com coordenadas de cada quadrado
+    '''tab01, tab02 = tabuleiros.desenhando_tabuleiros(tela_)
     
     mouse_pos_tab01_x = (mouse_x - tabuleiros.POS_TAB_01[0])//48
     mouse_pos_tab01_y = (mouse_y - tabuleiros.POS_TAB_01[1])//48
@@ -75,15 +75,15 @@ def jogo(tela_, mouse_x, mouse_y, navios_spr):
     if (0 <= mouse_pos_tab01_x < tabuleiros.LINS_TAB) and (0 <= mouse_pos_tab01_y < tabuleiros.COLS_TAB):
         print(f"TABULEIRO 1 - X: {mouse_pos_tab01_x} | Y: {mouse_pos_tab01_y}")
     elif (0 <= mouse_pos_tab02_x < tabuleiros.LINS_TAB) and (0 <= mouse_pos_tab02_y < tabuleiros.COLS_TAB):
-        print(f"TABULEIRO 2 - X: {mouse_pos_tab02_x} | Y: {mouse_pos_tab02_y}")
+        print(f"TABULEIRO 2 - X: {mouse_pos_tab02_x} | Y: {mouse_pos_tab02_y}")'''
+            
+        
     
     #Desenhando menu do jogo:
     pg.draw.rect(tela_, (100,100,100), (0, ALTURA - 400, LARGURA,400))
     pg.draw.line(tela_, (255,255,255), (LARGURA/2, ALTURA-400), (LARGURA/2, ALTURA), 10)
     pg.draw.line(tela_, (255,255,255), (0, ALTURA-400), (LARGURA, ALTURA-400), 10)
         
-    
-    
     tela_.blit(navios_spr["tm_4"], (LARGURA/2 + 400, ALTURA-300))
     tela_.blit(navios_spr["tm_3"], (LARGURA/2 + 300, ALTURA-300))
     tela_.blit(navios_spr["tm_2"], (LARGURA/2 + 200, ALTURA-300))
@@ -96,7 +96,6 @@ def jogo(tela_, mouse_x, mouse_y, navios_spr):
     tela_.blit(quatd_tm_3, (LARGURA/2 + 300, ALTURA - 350))
     tela_.blit(quatd_tm_2, (LARGURA/2 + 200, ALTURA - 350))
     tela_.blit(quatd_tm_1, (LARGURA/2 + 110, ALTURA - 350))
-    
     
     titulo_menu_jogo = FONTES["titulo menu_jogo"].render("Instrucoes de jogo", 1, (0,0,0))
     tela_.blit(titulo_menu_jogo, (30, ALTURA - 370))

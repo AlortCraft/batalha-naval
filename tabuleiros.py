@@ -15,6 +15,7 @@ POS_TAB_02 = (595, 80)
 
 
 def desenhando_tabuleiros(tela):
+    
     rect_pos_tab01 = []
     rect_pos_tab02 = []
     for linha in range(LINS_TAB):
@@ -32,6 +33,7 @@ def desenhando_tabuleiros(tela):
             
         rect_pos_tab01.append(coluna_temp_01)
         rect_pos_tab02.append(coluna_temp_02)
+        
             
     return rect_pos_tab01, rect_pos_tab02
             

@@ -38,6 +38,8 @@ def main():
     #Marcando tabuleiro
     marcacoes_tab01 = []
     marcacoes_tab02 = []
+    
+    
 
     #Jogo
     cena_atual = "menu"

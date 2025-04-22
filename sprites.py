@@ -5,6 +5,7 @@ def agua_spr_tile(tela):
     
     agua_size = (32, 32)
     
+    #carregando sprites
     agua_spr = [
         pg.transform.scale(pg.image.load("sprites/water/water1.png"), (agua_size[0], agua_size[1])),
         pg.transform.scale(pg.image.load("sprites/water/water2.png"), (agua_size[0], agua_size[1])),
@@ -16,7 +17,7 @@ def agua_spr_tile(tela):
         for y in range(0, ALTURA, agua_size[1]):
             tiles.append({
                 "posicao" : (x,y),
-                "index" : (x//agua_size[0]) % len(agua_spr),
+                "index" : (x//agua_size[0]) % len(agua_spr), #o index fica entre 0 e 2
                 "ultimo_update" : pg.time.get_ticks()
             })
 
@@ -47,7 +48,7 @@ def anim_constante(tela, sprites, tiles, temp_anim=500):
         for tile in tiles:
             if (agora - tile["ultimo_update"]) >= temp_anim:
                 tile["ultimo_update"] = agora
-                tile["index"] = (tile["index"] + 1) % len(sprites)
+                tile["index"] = (tile["index"] + 1) % len(sprites) #Alterar index
                 
                 #desenhar sprites
                 index = tile["index"]

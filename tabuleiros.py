@@ -3,33 +3,32 @@ from settings import *
 
 COR = (255,255,255)
 
-TAM_CELULA = 48
+TAM_CELULA = 40
 LINS_TAB, COLS_TAB = 10, 10
 DIST_TABS = 80
 GROSSURA_TABS = 2
 
-POS_TAB_01 = (35, 80)
+POS_TAB_01 = (115, 80)
 POS_TAB_02 = (595, 80)
 
             
 
 
 def desenhando_tabuleiros(tela):
-    
     rect_pos_tab01 = []
     rect_pos_tab02 = []
     for linha in range(LINS_TAB):
-        x = (linha * TAM_CELULA) + (LARGURA//2) - (TAM_CELULA * LINS_TAB/2)
+        x = (linha * TAM_CELULA) + (LARGURA//2) - (TAM_CELULA * LINS_TAB/2) # centralizar posicao da linha atual na tela
         coluna_temp_01 = []
         coluna_temp_02 = []
         for coluna in range(COLS_TAB):
-            y = (coluna * TAM_CELULA) + 80
+            y = (coluna * TAM_CELULA) + DIST_TABS
             
-            pygame.draw.rect(tela, COR, (x - (TAM_CELULA*LINS_TAB/2) - DIST_TABS/2, y, TAM_CELULA, TAM_CELULA), GROSSURA_TABS)
-            pygame.draw.rect(tela, COR, (x + (TAM_CELULA*LINS_TAB/2) + DIST_TABS/2, y, TAM_CELULA, TAM_CELULA), GROSSURA_TABS)
+            pygame.draw.rect(tela, COR, (x - (TAM_CELULA * LINS_TAB / 2) - DIST_TABS / 2, y, TAM_CELULA, TAM_CELULA), GROSSURA_TABS)
+            pygame.draw.rect(tela, COR, (x + (TAM_CELULA * LINS_TAB / 2) + DIST_TABS / 2, y, TAM_CELULA, TAM_CELULA), GROSSURA_TABS)
             
-            coluna_temp_01.append((x - (TAM_CELULA*LINS_TAB/2) - DIST_TABS/2, y))
-            coluna_temp_02.append((x + (TAM_CELULA*LINS_TAB/2) + DIST_TABS/2, y))
+            coluna_temp_01.append((x - (TAM_CELULA * LINS_TAB / 2) - DIST_TABS/2, y))
+            coluna_temp_02.append((x + (TAM_CELULA * LINS_TAB / 2) + DIST_TABS/2, y))
             
         rect_pos_tab01.append(coluna_temp_01)
         rect_pos_tab02.append(coluna_temp_02)
@@ -48,7 +47,6 @@ def pos_tabuleiro(tela, status):
 def main():
     pygame.init()
     
-    largura, altura = 1110, 1000
     tela = pygame.display.set_mode((LARGURA, ALTURA))
     pygame.display.set_caption("Tabuleiros")
     

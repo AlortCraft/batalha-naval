@@ -1,5 +1,6 @@
 import pygame as pg
 from settings import LARGURA, ALTURA
+import tabuleiros as tab
           
 def agua_spr_tile(tela):
     
@@ -31,6 +32,13 @@ def agua_spr_tile(tela):
 
 def navios_spr():
     navios = {
+        "tm_4" : pg.transform.scale(pg.image.load("sprites/ships/ShipCarrierHull.png"), (tab.TAM_CELULA, tab.TAM_CELULA*4)),
+        "tm_3" : pg.transform.scale(pg.image.load("sprites/ships/ShipCruiserHull.png"), (tab.TAM_CELULA * .6, tab.TAM_CELULA*3)),
+        "tm_2" : pg.transform.scale(pg.image.load("sprites/ships/ShipDestroyerHull.png"), (tab.TAM_CELULA * .5, tab.TAM_CELULA*2)),
+        "tm_1" : pg.transform.scale(pg.image.load("sprites/ships/Plane.png"), (tab.TAM_CELULA * .9, tab.TAM_CELULA*1))
+    }
+    
+    navios_selecionados = {
         "tm_4" : pg.transform.scale(pg.image.load("sprites/ships/ShipCarrierHull.png"), (48, 48*4)),
         "tm_3" : pg.transform.scale(pg.image.load("sprites/ships/ShipCruiserHull.png"), (36, 48*3)),
         "tm_2" : pg.transform.scale(pg.image.load("sprites/ships/ShipDestroyerHull.png"), (24, 48*2)),

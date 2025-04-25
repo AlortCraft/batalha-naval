@@ -17,7 +17,11 @@ def main():
     relogio = pg.time.Clock()
 
     #tabuleiro oculto
-    tabuleiro_oculto =  [["" for i in range(tabuleiros.LINS_TAB)] for i in range(tabuleiros.COLS_TAB)]
+    tabuleiro_oculto_1 =  [["" for i in range(tabuleiros.LINS_TAB)] for i in range(tabuleiros.COLS_TAB)]
+    tabuleiro_oculto_2 =  [["" for i in range(tabuleiros.LINS_TAB)] for i in range(tabuleiros.COLS_TAB)]
+    
+    #variaveis com as posicoes dos tabuleiros
+    tab01, tab02 = tabuleiros.desenhando_tabuleiros(tela)
 
     #Valores
     ultimoStatus = 0
@@ -35,6 +39,13 @@ def main():
     
     #criando sprites dos navios
     navios = sprites.navios_spr()
+    quant_navios = {
+        'tm_4': 1,
+        'tm_3': 2,
+        'tm_2': 3,
+        'tm_1': 4,
+    }
+    
     #Marcando tabuleiro
     marcacoes_tab01 = []
     marcacoes_tab02 = []
@@ -42,11 +53,11 @@ def main():
     
 
     #Jogo
-    cena_atual = "menu"
-    status_jogo = "posicionar"
+    cena_atual = "jogo" #Cenas: menu / jogo / troca
+    status_jogo = "atacar" #Status: posicionar / atacar
     player_atual = "1"
-    troca_jogador = False
-    player_ganhador = 0
+    
+    
     rodando = True
     while rodando:
         #Definindo FPS
@@ -55,6 +66,7 @@ def main():
         #Declarando variavel da posicao mouse        
         mouse = pg.mouse.get_pos()
         mouse_pos_x, mouse_pos_y = mouse
+        #print(mouse)
         
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -62,14 +74,12 @@ def main():
                 break
             if event.type == pg.MOUSEBUTTONDOWN:
                 if cena_atual == "jogo":
-                    if pg.get_init:
-                        tab01, tab02 = tabuleiros.desenhando_tabuleiros(tela)
-                
-                    mouse_pos_tab01_x = (mouse_pos_x - tabuleiros.POS_TAB_01[0])//48
-                    mouse_pos_tab01_y = (mouse_pos_y - tabuleiros.POS_TAB_01[1])//48
+                    mouse_pos_tab01_x = (mouse_pos_x - tabuleiros.POS_TAB_01[0]) // tabuleiros.TAM_CELULA
+                    mouse_pos_tab01_y = (mouse_pos_y - tabuleiros.POS_TAB_01[1]) // tabuleiros.TAM_CELULA
                     
-                    mouse_pos_tab02_x = (mouse_pos_x - tabuleiros.POS_TAB_02[0])//48
-                    mouse_pos_tab02_y = (mouse_pos_y - tabuleiros.POS_TAB_02[1])//48
+                    mouse_pos_tab02_x = (mouse_pos_x - tabuleiros.POS_TAB_02[0]) // tabuleiros.TAM_CELULA
+                    mouse_pos_tab02_y = (mouse_pos_y - tabuleiros.POS_TAB_02[1]) // tabuleiros.TAM_CELULA
+                    
                     
                     #posicionando pecas
                     if status_jogo == "posicionar":
@@ -100,15 +110,24 @@ def main():
             
             if status_jogo == "posicionar":
                 pass
+            
             elif status_jogo == "atacar":
                 #desenhando marcacoes
                 for marcacao in marcacoes_tab01:
-                    pygame.draw.rect(tela, (255,0,0), marcacao)
-                    
+                    x, y, w, h = marcacao
+                    pg.draw.line(tela, (0, 0, 255), (x, y), (x + w, y + h), 3) # Linha \
+                    pg.draw.line(tela, (0, 0, 255), (x + w, y), (x, y + h), 3) # Linha /
+
                 for marcacao in marcacoes_tab02:
-                    pygame.draw.rect(tela, (0,0,255), marcacao)
-            
+                    x, y, w, h = marcacao
+                    pg.draw.line(tela, (0, 0, 255), (x, y), (x + w, y + h), 3)
+                    pg.draw.line(tela, (0, 0, 255), (x + w, y), (x, y + h), 3)
+                
             cenas.jogo(tela, mouse_pos_x, mouse_pos_y, navios)
+            
+        elif cena_atual == "troca":
+            cenas.tela_troca_player(tela)
+            
         elif cena_atual == "sair":
             run = False
             break
@@ -121,6 +140,8 @@ def main():
             click_last_status = 1
         else:
             click_last_status = 0
+            
+        
         
 
         pg.display.update()

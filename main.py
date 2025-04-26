@@ -1,7 +1,7 @@
 import pygame as pg
 import math
 import pandas as pd
-import cores
+import cores, player
 import sprites as spr, tabuleiros as tab, cenas as cn
 from settings import *
 from pygame.locals import *
@@ -18,10 +18,6 @@ def main():
 
     #Definindo relogio
     relogio = pg.time.Clock()
-
-    #tabuleiro oculto
-    tabuleiro_oculto_1 =  [["" for i in range(tab.LINS_TAB)] for i in range(tab.COLS_TAB)]
-    tabuleiro_oculto_2 =  [["" for i in range(tab.LINS_TAB)] for i in range(tab.COLS_TAB)]
     
     #variaveis com as posicoes dos tabuleiros
     tab01, tab02 = tab.desenhando_tabuleiros(tela)
@@ -57,42 +53,48 @@ def main():
     }
     
 
+    #tabuleiro oculto
+    tabuleiro_oculto_1 =  [["" for i in range(tab.LINS_TAB)] for i in range(tab.COLS_TAB)]
+    tabuleiro_oculto_2 =  [["" for i in range(tab.LINS_TAB)] for i in range(tab.COLS_TAB)]
     
     #Marcando tabuleiro
     marcacoes_tab01 = []
     marcacoes_tab02 = []
     
     #Navios
-    navios1_gp = pg.sprite.Group()
-    navios2_gp = pg.sprite.Group()
-    navios3_gp = pg.sprite.Group()
-    navios4_gp = pg.sprite.Group()
+    navio_com_mouse = pg.sprite.Group()
     
-    navio1 = {
-        "nav" : spr.Navios(navios["tm_4"], 4),
+    navios_tab01 = pg.sprite.Group()
+    navios_tab02 = pg.sprite.Group()
+        
+    navios_obj = [
+        {
+        "nav" : spr.Navios(navios["tm_4"]),
         "tam" : 4,
         "qtd" : 1
-        }
-    navio2 = {
-        "nav" : spr.Navios(navios["tm_3"], 3),
+        },
+        {
+        "nav" : spr.Navios(navios["tm_3"]),
         "tam" : 3,
         "qtd" : 2
-        }
-    navio3 = {
-        "nav" : spr.Navios(navios["tm_2"], 2),
+        },
+        {
+        "nav" : spr.Navios(navios["tm_2"]),
         "tam" : 2,
         "qtd" : 3
-        }
-    navio4 = {
-        "nav" : spr.Navios(navios["tm_1"], 1),
+        },
+        {
+        "nav" : spr.Navios(navios["tm_1"]),
         "tam" : 1,
         "qtd" : 4
         }
+    ]
     
-    navio_atual = navio1
-    posicionar_navio = True
+    navio_atual = navios_obj[0]
+    index_nav = 0
+    navio_com_mouse.add(navio_atual["nav"])
     
-    navios1_gp.add(navio1["nav"])
+    
     
     
     #Jogo
@@ -120,52 +122,77 @@ def main():
                 rodando = False
                 break
             if cena_atual == "jogo":
-                if event.type == pg.MOUSEMOTION:
-                    if status_jogo == "posicionar" and posicionar_navio == True:
-                        if player_atual == "1":
-                            if (0 <= mouse_pos_tab01_x < tab.LINS_TAB) and (0 <= mouse_pos_tab01_y < tab.COLS_TAB):
-                                if (tab02[mouse_pos_tab01_x][mouse_pos_tab01_y][0], tab02[mouse_pos_tab01_x][mouse_pos_tab01_y][1], tab.TAM_CELULA, tab.TAM_CELULA) not in marcacoes_tab01:
-                                    navio_atual["nav"].update((tab.POS_TAB_01[0] + (tab.TAM_CELULA * mouse_pos_tab01_x), tab.POS_TAB_01[1] + (tab.TAM_CELULA * mouse_pos_tab01_y)))
-                                    
-                                    
+                if status_jogo == "posicionar":
+                    navio_atual, navio_colodado = player.posicionar_navios(event, player_atual, navio_atual, (mouse_pos_tab01_x, mouse_pos_tab01_y), (mouse_pos_tab02_x, mouse_pos_tab02_y))
+                    if navio_colodado:
                         
-                        if player_atual == "2":
-                            if (0 <= mouse_pos_tab02_x < tab.LINS_TAB) and (0 <= mouse_pos_tab02_y < tab.COLS_TAB):
-                                if (tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][0], tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][1], tab.TAM_CELULA, tab.TAM_CELULA) not in marcacoes_tab02:
-                                    navio_atual["nav"].update((tab.POS_TAB_02[0] + (tab.TAM_CELULA * mouse_pos_tab02_x), tab.POS_TAB_02[1] + (tab.TAM_CELULA * mouse_pos_tab02_y)))
+                        if player_atual == "1":
+                            navios_tab01.add(navio_atual["nav"])
+                        elif player_atual == "2":
+                            navios_tab02.add(navio_atual["nav"])
+                            
+                            
+                        if navio_atual["qtd"] == 0:
+                            index_nav += 1
+                            navio_com_mouse.empty()
+                            
+                            if index_nav == 4:
+                                if player_atual == "1":
+                                    player_atual = "2"
+                                    index_nav = 0
                                     
+                                    navios_obj = [
+                                        {
+                                        "nav" : spr.Navios(navios["tm_4"]),
+                                        "tam" : 4,
+                                        "qtd" : 1
+                                        },
+                                        {
+                                        "nav" : spr.Navios(navios["tm_3"]),
+                                        "tam" : 3,
+                                        "qtd" : 2
+                                        },
+                                        {
+                                        "nav" : spr.Navios(navios["tm_2"]),
+                                        "tam" : 2,
+                                        "qtd" : 3
+                                        },
+                                        {
+                                        "nav" : spr.Navios(navios["tm_1"]),
+                                        "tam" : 1,
+                                        "qtd" : 4
+                                        }
+                                    ]
                                     
-                                            
-                if event.type == pg.MOUSEBUTTONDOWN:
-                    if pg.mouse.get_pressed()[0] == 1:   
-                        #posicionando
-                        if status_jogo == "posicionar":
-                            if player_atual == "2":
-                                if (0 <= mouse_pos_tab02_x < tab.LINS_TAB) and (0 <= mouse_pos_tab02_y < tab.COLS_TAB):
-                                    if (tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][0], tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][1], tab.TAM_CELULA, tab.TAM_CELULA) not in marcacoes_tab02:
-                                        navio_atual["nav"].rotacionar()
-                                        pass
-                            elif player_atual == "1":
-                                if (0 <= mouse_pos_tab01_x < tab.LINS_TAB) and (0 <= mouse_pos_tab01_y < tab.COLS_TAB):
-                                    if (tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][0], tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][1], tab.TAM_CELULA, tab.TAM_CELULA) not in marcacoes_tab01:
-                                        navio_atual["nav"].rotacionar()
-                                        pass
-                        #atacando        
-                        elif status_jogo == "atacar":
-                            if player_atual == "1":
-                                if (0 <= mouse_pos_tab02_x < tab.LINS_TAB) and (0 <= mouse_pos_tab02_y < tab.COLS_TAB):
-                                    if (tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][0], tab01[mouse_pos_tab02_x][mouse_pos_tab02_y][1], tab.TAM_CELULA, tab.TAM_CELULA) not in marcacoes_tab02:
-                                        marcacoes_tab01.append((tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][0], tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][1], tab.TAM_CELULA, tab.TAM_CELULA))
-                                            
-                            elif player_atual == "2":
-                                if (0 <= mouse_pos_tab01_x < tab.LINS_TAB) and (0 <= mouse_pos_tab01_y < tab.COLS_TAB):
-                                    if (tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][0], tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][1], tab.TAM_CELULA, tab.TAM_CELULA) not in marcacoes_tab01:
-                                            marcacoes_tab01.append((tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][0], tab01[mouse_pos_tab02_x][mouse_pos_tab01_y][1], tab.TAM_CELULA, tab.TAM_CELULA))
+                                    navio_atual = navios_obj[index_nav]
+                                    navio_com_mouse.add(navio_atual["nav"])
+                                else:
+                                    status_jogo = "atacar"
+            
+                            else:
+                                navio_atual = navios_obj[index_nav]
+                                navio_com_mouse.add(navio_atual["nav"])
+                            
+                            
+                            
                 
-                if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_z:
-                        print("OKOK")
-                                
+                                    
+                elif status_jogo == "atacar":
+                    pass
+                '''     
+                #atacando        
+                elif status_jogo == "atacar":
+                    if player_atual == "1":
+                        if (0 <= mouse_pos_tab02_x < tab.LINS_TAB) and (0 <= mouse_pos_tab02_y < tab.COLS_TAB):
+                            if (tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][0], tab01[mouse_pos_tab02_x][mouse_pos_tab02_y][1], tab.TAM_CELULA, tab.TAM_CELULA) not in marcacoes_tab02:
+                                marcacoes_tab01.append((tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][0], tab02[mouse_pos_tab02_x][mouse_pos_tab02_y][1], tab.TAM_CELULA, tab.TAM_CELULA))
+                                    
+                    elif player_atual == "2":
+                        if (0 <= mouse_pos_tab01_x < tab.LINS_TAB) and (0 <= mouse_pos_tab01_y < tab.COLS_TAB):
+                            if (tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][0], tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][1], tab.TAM_CELULA, tab.TAM_CELULA) not in marcacoes_tab01:
+                                    marcacoes_tab01.append((tab01[mouse_pos_tab01_x][mouse_pos_tab01_y][0], tab01[mouse_pos_tab02_x][mouse_pos_tab01_y][1], tab.TAM_CELULA, tab.TAM_CELULA))
+
+                    '''            
                 
         tile_agua.draw(tela)
         tile_agua.update()
@@ -177,7 +204,10 @@ def main():
             tab.desenhando_tabuleiros(tela)
             
             if status_jogo == "posicionar":
-                navios1_gp.draw(tela)
+                navio_com_mouse.draw(tela)
+                navios_tab01.draw(tela)
+                navios_tab02.draw(tela)
+                
             
             elif status_jogo == "atacar":
                 #desenhando marcacoes

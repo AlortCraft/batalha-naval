@@ -84,15 +84,13 @@ def jogo(tela_, mouse_x, mouse_y, navios_spr):
     
     
     titulo_menu_jogo = FONTES["titulo menu_jogo"].render("GAME INSTRUCTIONS", 1, (0,0,0))
-    texto1 = FONTES["texto menu_jogo"].render("Aperte 'Z' para colocar colocar navio", 1, (0,0,0))
-    texto2 = FONTES["texto menu_jogo"].render("Aperte 'X' para colocar rotacionar navio", 1, (0,0,0))
-    texto3 = FONTES["texto menu_jogo"].render("Aperte 'C' para colocar remover navio", 1, (0,0,0))
+    texto1 = FONTES["texto menu_jogo"].render("Aperte 'Z' para colocar rotacionar navio", 1, (0,0,0))
+    texto2 = FONTES["texto menu_jogo"].render("Aperte 'C' para colocar colocar navio", 1, (0,0,0))
     
     
     tela_.blit(titulo_menu_jogo, (LARGURA/4 - (20*11.5), ALTURA - 270))
     tela_.blit(texto1, (30, ALTURA - 210))
     tela_.blit(texto2, (30, ALTURA - 140))
-    tela_.blit(texto3, (30, ALTURA - 70))
     
 
 def tela_troca_player(tela_):

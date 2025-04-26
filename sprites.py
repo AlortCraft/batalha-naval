@@ -26,10 +26,9 @@ class Agua(pg.sprite.Sprite): # herdando atributos/metodos de outra classe da bi
             
             
 class Navios(pg.sprite.Sprite):
-    def __init__(self, sprite, tam_navio):
+    def __init__(self, sprite):
         super().__init__()
         self.pos = (0,0)
-        self.tam_navio = tam_navio
         
         self.image = sprite
         self.rect = self.image.get_rect()
@@ -46,6 +45,7 @@ class Navios(pg.sprite.Sprite):
             self.rect.topleft = (self.pos[0], self.pos[1] + (tab.TAM_CELULA/2))
         else:
             self.rect.topleft = (self.pos[0] + (tab.TAM_CELULA/2), self.pos[1])
+            
         
             
          

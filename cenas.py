@@ -30,12 +30,10 @@ def menu_inicial(tela_, mouse_x, mouse_y):
     if colid_jogar:
         botao_jogar = FONTES["botoes menu_inicial"].render("JOGAR", 1, (100,100,100))
         if pg.mouse.get_pressed()[0] == 1:
-            sprites.agua_spr_tile(tela_)
             return "jogo"
     if colid_config:
         botao_instrucoes = FONTES["botoes menu_inicial"].render("INSTRUÇÕES", 1, (100,100,100))
         if pg.mouse.get_pressed()[0] == 1:
-            sprites.agua_spr_tile(tela_)
             return "config"
     if colid_sair:
         botao_sair = FONTES["botoes menu_inicial"].render("SAIR", 1, (100,100,100))
@@ -60,8 +58,8 @@ def jogo(tela_, mouse_x, mouse_y, navios_spr):
     player1 = FONTES["titulo menu_jogo"].render("PLAYER 1", 1, (0, 0, 0))
     player2 = FONTES["titulo menu_jogo"].render("PLAYER 2", 1, (0, 0, 0))
     
-    tela_.blit(player1, (tabuleiros.POS_TAB_01[0] + (tabuleiros.COLS_TAB * tabuleiros.TAM_CELULA)/2, 20))
-    tela_.blit(player2, (tabuleiros.POS_TAB_02[0] + (tabuleiros.COLS_TAB * tabuleiros.TAM_CELULA)/2, 20))
+    tela_.blit(player1, (tabuleiros.POS_TAB_01[0] + (tabuleiros.COLS_TAB * tabuleiros.TAM_CELULA)/2 - player1.get_rect().center[0], 20))
+    tela_.blit(player2, (tabuleiros.POS_TAB_02[0] + (tabuleiros.COLS_TAB * tabuleiros.TAM_CELULA)/2 - player1.get_rect().center[0], 20))
             
     #Desenhando menu do jogo:
     pg.draw.rect(tela_, (100,100,100), (0, ALTURA - 300, LARGURA,300))

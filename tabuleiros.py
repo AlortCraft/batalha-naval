@@ -1,4 +1,4 @@
-import pygame
+import pygame as pg
 from settings import *
 
 COR = (255,255,255)
@@ -11,21 +11,19 @@ GROSSURA_TABS = 2
 POS_TAB_01 = (115, 80)
 POS_TAB_02 = (595, 80)
 
-            
-
 
 def desenhando_tabuleiros(tela):
     rect_pos_tab01 = []
     rect_pos_tab02 = []
     for linha in range(LINS_TAB):
-        x = (linha * TAM_CELULA) + (LARGURA//2) - (TAM_CELULA * LINS_TAB/2) # centralizar posicao da linha atual na tela
+        x = (linha * TAM_CELULA) + (LARGURA//2) - (TAM_CELULA * LINS_TAB/2)
         coluna_temp_01 = []
         coluna_temp_02 = []
         for coluna in range(COLS_TAB):
             y = (coluna * TAM_CELULA) + DIST_TABS
             
-            pygame.draw.rect(tela, COR, (x - (TAM_CELULA * LINS_TAB / 2) - DIST_TABS / 2, y, TAM_CELULA, TAM_CELULA), GROSSURA_TABS)
-            pygame.draw.rect(tela, COR, (x + (TAM_CELULA * LINS_TAB / 2) + DIST_TABS / 2, y, TAM_CELULA, TAM_CELULA), GROSSURA_TABS)
+            pg.draw.rect(tela, COR, (x - (TAM_CELULA * LINS_TAB / 2) - DIST_TABS / 2, y, TAM_CELULA, TAM_CELULA), GROSSURA_TABS)
+            pg.draw.rect(tela, COR, (x + (TAM_CELULA * LINS_TAB / 2) + DIST_TABS / 2, y, TAM_CELULA, TAM_CELULA), GROSSURA_TABS)
             
             coluna_temp_01.append((x - (TAM_CELULA * LINS_TAB / 2) - DIST_TABS/2, y))
             coluna_temp_02.append((x + (TAM_CELULA * LINS_TAB / 2) + DIST_TABS/2, y))
@@ -35,38 +33,3 @@ def desenhando_tabuleiros(tela):
         
             
     return rect_pos_tab01, rect_pos_tab02
-            
-            
-def pos_tabuleiro(tela, status):
-    if status == 1:
-        pass
-    else:
-        pass
-
-
-def main():
-    pygame.init()
-    
-    tela = pygame.display.set_mode((LARGURA, ALTURA))
-    pygame.display.set_caption("Tabuleiros")
-    
-    canva = pygame.Surface((LARGURA, ALTURA), pygame.SRCALPHA).convert_alpha()
-    canva.fill((255,255,255, 50))
-    
-    
-    run = True
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-                break
-        
-        desenhando_tabuleiros(tela)
-        
-        pygame.display.update()
-    
-    pygame.quit()
-
-
-if __name__ == "__main__":
-    main()

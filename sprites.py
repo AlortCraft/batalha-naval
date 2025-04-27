@@ -1,5 +1,5 @@
 import pygame as pg
-from settings import LARGURA, ALTURA
+from settings import *
 import tabuleiros as tab
 
 
@@ -26,9 +26,11 @@ class Agua(pg.sprite.Sprite): # herdando atributos/metodos de outra classe da bi
             
             
 class Navios(pg.sprite.Sprite):
-    def __init__(self, sprite):
+    def __init__(self, sprite, num_cel, pos):
         super().__init__()
-        self.pos = (0,0)
+        self.num_cel = num_cel
+        
+        self.pos = pos
         
         self.image = sprite
         self.rect = self.image.get_rect()
@@ -38,13 +40,11 @@ class Navios(pg.sprite.Sprite):
         self.rotacao = (self.rotacao + 90) % 180
         self.image = pg.transform.rotate(self.image, 90)
         
-    def update(self, pos_atual):
-        self.pos = pos_atual
-        
+    def update(self):
         if self.rotacao == 0:
-            self.rect.topleft = (self.pos[0], self.pos[1] + (tab.TAM_CELULA/2))
+            self.rect.topleft = (self.pos[0], self.pos[1])
         else:
-            self.rect.topleft = (self.pos[0] + (tab.TAM_CELULA/2), self.pos[1])
+            self.rect.topleft = (self.pos[0], self.pos[1])
             
         
             
@@ -72,48 +72,10 @@ def navios_spr():
     }
     
     return navios
-
-
-def anim_constante(tela, sprites, tiles, temp_anim=500):
-        #tempo (em milissegundo) de agora
-        agora = pg.time.get_ticks()
-
-        #atualizar sprites
-        for tile in tiles:
-            if (agora - tile["ultimo_update"]) >= temp_anim:
-                tile["ultimo_update"] = agora
-                tile["index"] = (tile["index"] + 1) % len(sprites) #Alterar index
-                
-                #desenhar sprites
-                index = tile["index"]
-                tela.blit(sprites[index], tile["posicao"])
             
 
 def main():
-    pg.init()
-    
-    largura, altura = 1110, 1000
-    tela = pg.display.set_mode((largura, altura))
-    pg.display.set_caption("Modulo de Sprites")
-    
-    relogio = pg.time.Clock()
-    
-    sprs_agua, tiles_agua = agua_spr(tela, largura, altura)
-    
-    #Loop
-    run = True
-    while run:
-        relogio.tick(60)
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                run = False
-                break
-        
-        anim_constante(tela, sprs_agua, tiles_agua)
-            
-        pg.display.update()
-    
-    pg.quit()
+    pass
 
 if __name__ == "__main__":
     main()

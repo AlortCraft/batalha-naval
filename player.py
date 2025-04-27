@@ -3,38 +3,79 @@ import tabuleiros as tab
 from settings import *
 
 
-def posicionar_navios(evento, player, navio, mouse_pos_tab01, mouse_pos_tab02):
+def posicionar_navios(evento, player, navio):
     colocado = False
-    
-    if evento.type == pg.MOUSEMOTION:
+    if evento.key == pg.K_RIGHT:
         if player == "1":
-            if (0 <= mouse_pos_tab01[0] < tab.LINS_TAB) and (0 <= mouse_pos_tab01[1] < tab.COLS_TAB):
-                if navio["nav"].rotacao == 90 and mouse_pos_tab01[0] >= tab.LINS_TAB - navio["tam"]:
-                    print(mouse_pos_tab01)
-                    navio["nav"].update((tab.POS_TAB_01[0] + (tab.TAM_CELULA * (tab.LINS_TAB-(navio["tam"]+1))), tab.POS_TAB_01[1] + (tab.TAM_CELULA * mouse_pos_tab01[1])))
-                elif navio["nav"].rotacao == 0 and mouse_pos_tab01[1] >= tab.COLS_TAB - (navio["tam"]+1):
-                    navio["nav"].update((tab.POS_TAB_01[0] + (tab.TAM_CELULA * mouse_pos_tab01[0]), tab.POS_TAB_01[1] + (tab.TAM_CELULA * (tab.COLS_TAB-(navio["tam"]+1)))))
-                else:
-                    navio["nav"].update((tab.POS_TAB_01[0] + (tab.TAM_CELULA * mouse_pos_tab01[0]), tab.POS_TAB_01[1] + (tab.TAM_CELULA * mouse_pos_tab01[1])))
-        
-        elif player == "2":
-            if (0 <= mouse_pos_tab02[0] < tab.LINS_TAB) and (0 <= mouse_pos_tab02[1] < tab.COLS_TAB):
-                if navio["nav"].rotacao == 90 and mouse_pos_tab02[0] >= tab.LINS_TAB - navio["tam"]:
-                    print(mouse_pos_tab02)
-                    navio["nav"].update((tab.POS_TAB_02[0] + (tab.TAM_CELULA * (tab.LINS_TAB-(navio["tam"]+1))), tab.POS_TAB_02[1] + (tab.TAM_CELULA * mouse_pos_tab02[1])))
-                elif navio["nav"].rotacao == 0 and mouse_pos_tab02[1] >= tab.COLS_TAB - (navio["tam"]+1):
-                    navio["nav"].update((tab.POS_TAB_02[0] + (tab.TAM_CELULA * mouse_pos_tab02[0]), tab.POS_TAB_02[1] + (tab.TAM_CELULA * (tab.COLS_TAB-(navio["tam"]+1)))))
-                else:
-                    navio["nav"].update((tab.POS_TAB_02[0] + (tab.TAM_CELULA * mouse_pos_tab02[0]), tab.POS_TAB_02[1] + (tab.TAM_CELULA * mouse_pos_tab02[1])))
+            if navio.rotacao == 90 and (navio.pos[0] - tab.POS_TAB_01[0]) // tab.TAM_CELULA < (tab.COLS_TAB - (navio.num_cel)):
+                navio.pos[0] += tab.TAM_CELULA
                     
-    if evento.type == pg.KEYDOWN:
-        if evento.key == pg.K_z:
-            navio["nav"].rotacionar()
-        
-        if evento.key == pg.K_c:
-            navio["qtd"] -= 1
-            colocado = True
+            elif navio.rotacao == 0 and (navio.pos[0] - tab.POS_TAB_01[0]) // tab.TAM_CELULA < tab.COLS_TAB-1:
+                navio.pos[0] += tab.TAM_CELULA
                 
+                
+        elif player == "2":
+            if navio.rotacao == 90 and (navio.pos[0] - tab.POS_TAB_02[0]) // tab.TAM_CELULA < (tab.COLS_TAB - (navio.num_cel)):
+                navio.pos[0] += tab.TAM_CELULA
+                    
+            elif navio.rotacao == 0 and (navio.pos[0] - tab.POS_TAB_02[0]) // tab.TAM_CELULA < tab.COLS_TAB-1:
+                navio.pos[0] += tab.TAM_CELULA
+                
+    elif evento.key == pg.K_LEFT:
+        if player == "1":
+            if navio.rotacao == 90 and (navio.pos[0] - tab.POS_TAB_01[0]) // tab.TAM_CELULA > 0:
+                navio.pos[0] -= tab.TAM_CELULA
+                    
+            elif navio.rotacao == 0 and (navio.pos[0] - tab.POS_TAB_01[0]) // tab.TAM_CELULA > 0:
+                navio.pos[0] -= tab.TAM_CELULA
+                
+                
+        elif player == "2":
+            if navio.rotacao == 90 and (navio.pos[0] - tab.POS_TAB_02[0]) // tab.TAM_CELULA > 0:
+                navio.pos[0] -= tab.TAM_CELULA
+                    
+            elif navio.rotacao == 0 and (navio.pos[0] - tab.POS_TAB_02[0]) // tab.TAM_CELULA > 0:
+                navio.pos[0] -= tab.TAM_CELULA
+    
+    if evento.key == pg.K_UP:
+        if player == "1":
+            if navio.rotacao == 90 and (navio.pos[1] - tab.POS_TAB_01[1]) // tab.TAM_CELULA > 0:
+                navio.pos[1] -= tab.TAM_CELULA
+                    
+            elif navio.rotacao == 0 and (navio.pos[1] - tab.POS_TAB_01[1]) // tab.TAM_CELULA > 0:
+                navio.pos[1] -= tab.TAM_CELULA
+                
+                
+        elif player == "2":
+            if navio.rotacao == 90 and (navio.pos[1] - tab.POS_TAB_02[1]) // tab.TAM_CELULA > 0:
+                navio.pos[1] -= tab.TAM_CELULA
+                    
+            elif navio.rotacao == 0 and (navio.pos[1] - tab.POS_TAB_02[1]) // tab.TAM_CELULA > 0:
+                navio.pos[1] -= tab.TAM_CELULA
+    
+    elif evento.key == pg.K_DOWN:
+        if player == "1":
+            if navio.rotacao == 90 and (navio.pos[1] - tab.POS_TAB_01[1]) // tab.TAM_CELULA < tab.LINS_TAB -1:
+                navio.pos[1] += tab.TAM_CELULA
+                    
+            elif navio.rotacao == 0 and (navio.pos[1] - tab.POS_TAB_01[1]) // tab.TAM_CELULA < (tab.LINS_TAB - navio.num_cel):
+                navio.pos[1] += tab.TAM_CELULA
+                
+                
+        elif player == "2":
+            if navio.rotacao == 90 and (navio.pos[1] - tab.POS_TAB_02[1]) // tab.TAM_CELULA < tab.LINS_TAB -1:
+                navio.pos[1] += tab.TAM_CELULA
+                    
+            elif navio.rotacao == 0 and (navio.pos[1] - tab.POS_TAB_02[1]) // tab.TAM_CELULA < (tab.LINS_TAB - navio.num_cel):
+                navio.pos[1] += tab.TAM_CELULA
+                    
+
+    if evento.key == pg.K_z:
+        navio.rotacionar()
+    
+    if evento.key == pg.K_c:
+        colocado = True
+            
     return navio, colocado
             
 

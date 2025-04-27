@@ -101,6 +101,18 @@ def tela_troca_player(tela_):
     tela_.blit(texto1, (LARGURA/2 - (texto1.get_rect().center[0]), ALTURA/2 - (texto1.get_rect().center[1])))
     
     
+def tela_fim_de_jogo(tela_, player_ganhador, cor):
+    tela_.fill(cor)
+    
+    if player_ganhador == "1":
+        texto_titulo = FONTES["titulo menu_jogo"].render("Player 1 Venceu!", 1, (0,0,0))
+    if player_ganhador == "2":
+        texto_titulo = FONTES["titulo menu_jogo"].render("Player 2 Venceu!", 1, (0,0,0))
+    texto1 = FONTES["texto menu_jogo"].render("Aperte 'ESPACE' para continuar", 1, (0,0,0))
+    tela_.blit(texto_titulo, (LARGURA/2 - (texto_titulo.get_rect().center[0]), ALTURA/2 - (texto_titulo.get_rect().center[1]) - 100))
+    tela_.blit(texto1, (LARGURA/2 - (texto1.get_rect().center[0]), ALTURA/2 - (texto1.get_rect().center[1])))
+    
+    
     
 
 def main():

@@ -39,8 +39,6 @@ def main():
     marcacoes_tab02 = []
     marcacoes_tab01_oc = []
     marcacoes_tab02_oc = []
-    marc_P_tab01 = []
-    marc_P_tab02 = []
     
   
     navios_tab01 = []
@@ -185,11 +183,11 @@ def main():
                                     cena_atual = "troca"
                                 else:
                                     bomb_explosion.play(0)
-                                    marcacoes_tab02_oc.append("o")
                                     
                                     for navio in navios_tab02:
-                                        if (x,y) in navio["celulas"]:
+                                        if (x,y) in navio["celulas"] and navio["destruido"] == False:
                                             navio["destruido"] = True
+                                            marcacoes_tab02_oc.append("o")
                             
                             
                         elif player_atual == "2":
@@ -209,11 +207,10 @@ def main():
                                 else:
                                     bomb_explosion.play(0)
                                     
-                                    marcacoes_tab01_oc.append("o")
-                                    
                                     for navio in navios_tab01:
-                                        if (x,y) in navio["celulas"]:
+                                        if (x,y) in navio["celulas"] and navio["destruido"] == False:
                                             navio["destruido"] = True
+                                            marcacoes_tab01_oc.append("o")
                                     
                     
             elif cena_atual == "troca":
@@ -227,6 +224,21 @@ def main():
                         status_jogo = "posicionar"
                         player_atual = "1"
                         cena_atual = "menu"
+                        
+                        tabuleiro_oculto_1 =  [["" for i in range(tab.LINS_TAB)] for i in range(tab.COLS_TAB)]
+                        tabuleiro_oculto_2 =  [["" for i in range(tab.LINS_TAB)] for i in range(tab.COLS_TAB)]
+                        
+
+                        marcacoes_tab01 = []
+                        marcacoes_tab02 = []
+                        marcacoes_tab01_oc = []
+                        marcacoes_tab02_oc = []
+                    
+                        navios_tab01 = []
+                        navios_tab02 = [] 
+                        
+                        quant_navios_j1 = [4,3,2,1]
+                        quant_navios_j2 = [4,3,2,1]
                         
                         pg.mixer.music.stop()
                         pg.mixer.music.load("sound_effects/menu.wav")
@@ -273,11 +285,7 @@ def main():
             elif status_jogo == "atacar":
                 for marcacao in marcacoes_tab01:
                     x, y, w, h = marcacao
-                    
-                    x_tab = int((x - tab.POS_TAB_01[0]) // tab.TAM_CELULA)
-                    y_tab = int((y - tab.POS_TAB_01[1]) // tab.TAM_CELULA)
-                        
-                        
+   
                     pg.draw.line(tela, (255,0,0), (x, y), (x + w, y + h), 3)
                     pg.draw.line(tela, (255,0,0), (x + w, y), (x, y + h), 3)
                     
@@ -286,23 +294,18 @@ def main():
                 for marcacao in marcacoes_tab02:
                     x, y, w, h = marcacao
                     
-                    
-                    x_tab = int((x - tab.POS_TAB_02[0]) // tab.TAM_CELULA)
-                    y_tab = int((y - tab.POS_TAB_02[1]) // tab.TAM_CELULA)
-                    
-                    
                     pg.draw.line(tela, (255,0,0), (x, y), (x + w, y + h), 3)
                     pg.draw.line(tela, (255,0,0), (x + w, y), (x, y + h), 3)
                     
                     
                     
-                if marcacoes_tab01_oc.count("o") == 20:
+                if marcacoes_tab01_oc.count("o") == 10:
                     player_atual = "2"
                     cena_atual = "fim"
                     pg.mixer.music.load("sound_effects/victory.wav")
                     pg.mixer.music.play(-1)
                     
-                elif marcacoes_tab02_oc.count("o") == 20:
+                elif marcacoes_tab02_oc.count("o") == 10:
                     player_atual = "1"
                     cena_atual = "fim"
                     pg.mixer.music.load("sound_effects/victory.wav")

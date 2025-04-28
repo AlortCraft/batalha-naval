@@ -89,7 +89,7 @@ def jogo(tela_, player, status):
 
     
         tela_.blit(texto1, (30, ALTURA - 210))
-        tela_.blit(texto2, (30, ALTURA - 190))
+        tela_.blit(texto2, (30, ALTURA - 180))
     
 
 def tela_troca_player(tela_):

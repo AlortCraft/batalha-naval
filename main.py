@@ -93,6 +93,8 @@ def main():
                                         if posicao_livre:
                                             for x in range(pos_tab_tempX, pos_tab_tempX + navio_atual["num_cel"]):
                                                 tabuleiro_oculto_1[x][pos_tab_tempY] = "n"
+                                                
+                                                navio_atual["celulas"].append((x, pos_tab_tempY))
                                         
                                     else:
                                         for y in range(pos_tab_tempY, pos_tab_tempY + navio_atual["num_cel"]):
@@ -102,6 +104,8 @@ def main():
                                         if posicao_livre:    
                                             for y in range(pos_tab_tempY, pos_tab_tempY + navio_atual["num_cel"]):
                                                 tabuleiro_oculto_1[pos_tab_tempX][y] = "n"
+                                                
+                                                navio_atual["celulas"].append((pos_tab_tempX, y))
                                     
                                     if posicao_livre:
                                         ship_colocado.play(0)
@@ -129,6 +133,8 @@ def main():
                                         if posicao_livre:
                                             for x in range(pos_tab_tempX, pos_tab_tempX + navio_atual["num_cel"]):
                                                 tabuleiro_oculto_2[x][pos_tab_tempY] = "n"
+                                                
+                                                navio_atual["celulas"].append((x, pos_tab_tempY))
                                         
                                     else:
                                         for y in range(pos_tab_tempY, pos_tab_tempY + navio_atual["num_cel"]):
@@ -138,6 +144,8 @@ def main():
                                         if posicao_livre:    
                                             for y in range(pos_tab_tempY, pos_tab_tempY + navio_atual["num_cel"]):
                                                 tabuleiro_oculto_2[pos_tab_tempX][y] = "n"
+                                                
+                                                navio_atual["celulas"].append((pos_tab_tempX, y))
                                     
                                     if posicao_livre:
                                         navios_tab02.append(navio_atual)
@@ -232,17 +240,21 @@ def main():
             if player_atual == "2":
                 for navio in navios_tab02:
                     tela.blit(navio["sprite"], navio["pos"])
+                    
             
             if status_jogo == "posicionar":
                 if navio_atual:
                     tela.blit(navio_atual["sprite"], navio_atual["pos"])
             
             elif status_jogo == "atacar":
+                marc_tab01 = []
                 for marcacao in marcacoes_tab01:
                     x, y, w, h = marcacao
                     
                     x_tab = int((x - tab.POS_TAB_01[0]) // tab.TAM_CELULA)
-                    y_tab = int((y - tab.POS_TAB_01[1]) // tab.TAM_CELULA)  
+                    y_tab = int((y - tab.POS_TAB_01[1]) // tab.TAM_CELULA)
+                    
+                    marc_tab01.append((x_tab, y_tab))
                     
                     if tabuleiro_oculto_1[x_tab][y_tab] == "n":
                         cor = (0, 0, 255)
@@ -253,11 +265,14 @@ def main():
                     pg.draw.line(tela, cor, (x, y), (x + w, y + h), 3)
                     pg.draw.line(tela, cor, (x + w, y), (x, y + h), 3)
                     
+                marc_tab02 = []
                 for marcacao in marcacoes_tab02:
                     x, y, w, h = marcacao
                     
                     x_tab = int((x - tab.POS_TAB_02[0]) // tab.TAM_CELULA)
                     y_tab = int((y - tab.POS_TAB_02[1]) // tab.TAM_CELULA)
+                    
+                    marc_tab02.append((x_tab, y_tab))
                     
                     cor = (255, 0, 0)
                     if tabuleiro_oculto_2[x_tab][y_tab] == "n":
@@ -269,6 +284,31 @@ def main():
                     
                     pg.draw.line(tela, cor, (x, y), (x + w, y + h), 3)
                     pg.draw.line(tela, cor, (x + w, y), (x, y + h), 3)
+                    
+                    
+                for navio in navios_tab01:
+                    destruido = False
+                    for pos in navio["celulas"]:
+                        if pos not in marc_tab01:
+                            destruido = False
+                            break
+                        destruido = True
+                        
+                    if destruido:    
+                        tela.blit(navio["sprite"], navio["pos"])
+                    
+                    
+                for navio in navios_tab02:
+                    destruido = False
+                    for x, y in navio["celulas"]:
+                        if (x, y) not in marc_tab02:
+                            destruido = False
+                            break
+                        destruido = True
+                        
+                    if destruido:    
+                        tela.blit(navio["sprite"], navio["pos"])    
+                    
                     
                 if marcacoes_tab01_oc.count("o") == 20:
                     player_atual = "2"

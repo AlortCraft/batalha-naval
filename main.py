@@ -39,6 +39,8 @@ def main():
     marcacoes_tab02 = []
     marcacoes_tab01_oc = []
     marcacoes_tab02_oc = []
+    marc_P_tab01 = []
+    marc_P_tab02 = []
     
   
     navios_tab01 = []
@@ -148,6 +150,7 @@ def main():
                                                 navio_atual["celulas"].append((pos_tab_tempX, y))
                                     
                                     if posicao_livre:
+                                        ship_colocado.play(0)
                                         navios_tab02.append(navio_atual)
                                         navio_atual = None
                                         navios = spr.navios_info()
@@ -171,10 +174,11 @@ def main():
                                 x = int(marcacao[0] - tab.POS_TAB_02[0]) // tab.TAM_CELULA
                                 y = int(marcacao[1] - tab.POS_TAB_02[1]) // tab.TAM_CELULA
                                 
-                                marcacoes_tab02.append(marcacao)
                                 
                                 if tabuleiro_oculto_2[x][y] != "n":    
-                                    bomb_water.play(0)   
+                                    bomb_water.play(0)
+                                    
+                                    marcacoes_tab02.append(marcacao)
                                     marcacoes_tab02_oc.append("x")
                                     
                                     player_atual = "2"
@@ -182,6 +186,10 @@ def main():
                                 else:
                                     bomb_explosion.play(0)
                                     marcacoes_tab02_oc.append("o")
+                                    
+                                    for navio in navios_tab02:
+                                        if (x,y) in navio["celulas"]:
+                                            navio["destruido"] = True
                             
                             
                         elif player_atual == "2":
@@ -191,16 +199,22 @@ def main():
                                 x = int((marcacao[0] - tab.POS_TAB_01[0]) // tab.TAM_CELULA)
                                 y = int((marcacao[1] - tab.POS_TAB_01[1]) // tab.TAM_CELULA)
                                 
-                                marcacoes_tab01.append(marcacao)
                                 
                                 if tabuleiro_oculto_1[x][y] != "n":
                                     bomb_water.play(0)
+                                    marcacoes_tab01.append(marcacao)
                                     marcacoes_tab01_oc.append("x")
                                     player_atual = "1"
                                     cena_atual = "troca"
                                 else:
                                     bomb_explosion.play(0)
+                                    
                                     marcacoes_tab01_oc.append("o")
+                                    
+                                    for navio in navios_tab01:
+                                        if (x,y) in navio["celulas"]:
+                                            navio["destruido"] = True
+                                    
                     
             elif cena_atual == "troca":
                 if event.type == pg.KEYDOWN:
@@ -241,73 +255,45 @@ def main():
                 for navio in navios_tab02:
                     tela.blit(navio["sprite"], navio["pos"])
                     
+                    
+            for navio in navios_tab01:
+                    if navio["destruido"] == True:
+                        tela.blit(navio["sprite"], navio["pos"])
+                        
+            for navio in navios_tab02:
+                    if navio["destruido"] == True:
+                        tela.blit(navio["sprite"], navio["pos"])
+                        
+                    
             
             if status_jogo == "posicionar":
                 if navio_atual:
                     tela.blit(navio_atual["sprite"], navio_atual["pos"])
             
             elif status_jogo == "atacar":
-                marc_tab01 = []
                 for marcacao in marcacoes_tab01:
                     x, y, w, h = marcacao
                     
                     x_tab = int((x - tab.POS_TAB_01[0]) // tab.TAM_CELULA)
                     y_tab = int((y - tab.POS_TAB_01[1]) // tab.TAM_CELULA)
-                    
-                    marc_tab01.append((x_tab, y_tab))
-                    
-                    if tabuleiro_oculto_1[x_tab][y_tab] == "n":
-                        cor = (0, 0, 255)
                         
-                    elif tabuleiro_oculto_1[x_tab][y_tab] == "":
-                        cor = (255, 0, 0)
                         
-                    pg.draw.line(tela, cor, (x, y), (x + w, y + h), 3)
-                    pg.draw.line(tela, cor, (x + w, y), (x, y + h), 3)
+                    pg.draw.line(tela, (255,0,0), (x, y), (x + w, y + h), 3)
+                    pg.draw.line(tela, (255,0,0), (x + w, y), (x, y + h), 3)
                     
-                marc_tab02 = []
+                
+                    
                 for marcacao in marcacoes_tab02:
                     x, y, w, h = marcacao
+                    
                     
                     x_tab = int((x - tab.POS_TAB_02[0]) // tab.TAM_CELULA)
                     y_tab = int((y - tab.POS_TAB_02[1]) // tab.TAM_CELULA)
                     
-                    marc_tab02.append((x_tab, y_tab))
                     
-                    cor = (255, 0, 0)
-                    if tabuleiro_oculto_2[x_tab][y_tab] == "n":
-                        cor = (0, 0, 255)
-                        
-                    elif tabuleiro_oculto_1[x_tab][y_tab] == "":
-                        cor = (255, 0, 0)
+                    pg.draw.line(tela, (255,0,0), (x, y), (x + w, y + h), 3)
+                    pg.draw.line(tela, (255,0,0), (x + w, y), (x, y + h), 3)
                     
-                    
-                    pg.draw.line(tela, cor, (x, y), (x + w, y + h), 3)
-                    pg.draw.line(tela, cor, (x + w, y), (x, y + h), 3)
-                    
-                    
-                for navio in navios_tab01:
-                    destruido = False
-                    for pos in navio["celulas"]:
-                        if pos not in marc_tab01:
-                            destruido = False
-                            break
-                        destruido = True
-                        
-                    if destruido:    
-                        tela.blit(navio["sprite"], navio["pos"])
-                    
-                    
-                for navio in navios_tab02:
-                    destruido = False
-                    for x, y in navio["celulas"]:
-                        if (x, y) not in marc_tab02:
-                            destruido = False
-                            break
-                        destruido = True
-                        
-                    if destruido:    
-                        tela.blit(navio["sprite"], navio["pos"])    
                     
                     
                 if marcacoes_tab01_oc.count("o") == 20:

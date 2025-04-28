@@ -51,28 +51,32 @@ def navios_info():
             "num_cel": 4,
             "pos": [0, 0],
             "rotacao": 0,
-            "celulas": []
+            "celulas": [],
+            "destruido": False
         },
         "tm_3": {
             "sprite": pg.transform.scale(pg.image.load("sprites/ships/ShipCruiserHull.png"), (tab.TAM_CELULA * .6, tab.TAM_CELULA * 3)),
             "num_cel": 3,
             "pos": [0, 0],
             "rotacao": 0,
-            "celulas": []
+            "celulas": [],
+            "destruido": False
         },
         "tm_2": {
             "sprite": pg.transform.scale(pg.image.load("sprites/ships/ShipDestroyerHull.png"), (tab.TAM_CELULA * .5, tab.TAM_CELULA * 2)),
             "num_cel": 2,
             "pos": [0, 0],
             "rotacao": 0,
-            "celulas": []
+            "celulas": [],
+            "destruido": False
         },
         "tm_1": {
             "sprite": pg.transform.scale(pg.image.load("sprites/ships/Plane.png"), (tab.TAM_CELULA * .9, tab.TAM_CELULA * 1)),
             "num_cel": 1,
             "pos": [0, 0],
             "rotacao": 0,
-            "celulas": []
+            "celulas": [],
+            "destruido": False
         }
      }
     return navios
